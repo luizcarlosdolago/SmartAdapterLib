@@ -129,6 +129,40 @@ public class MainActivity extends AppCompatActivity {
 }
 ````
 
+
+If you need to access the row in the list, add the OnViewCreatedListener callback as follows:
+
+````java
+        adapter.setOnViewCreatedListener(new OnViewCreatedListener<Account>() {
+            @Override
+            public void onViewCreated(View layout, final Account account) {
+                ImageView ivMenu = layout.findViewById(R.id.ivMenu);
+                if ( ivMenu != null ) {
+                    ivMenu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            PopupMenu popup = new PopupMenu(MainActivity.this, view);
+                            popup.getMenuInflater().inflate(R.menu.account_menu, popup.getMenu());
+                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    if ( item.getItemId() == R.id.action_edit ) {
+                                        Toast.makeText(MainActivity.this, "Edit " + account.getName() + " Clicked!!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if ( item.getItemId() == R.id.action_delete ) {
+                                        Toast.makeText(MainActivity.this, "Delete " + account.getName() + " Clicked!!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    return false;
+                                }
+                            });
+                            popup.show();                    }
+                    });
+                }
+            }
+        });
+````
+
+
 Download
 
 Step 1. Add the JitPack repository to your build file
